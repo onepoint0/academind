@@ -1,16 +1,14 @@
 import { CORE_CONCEPTS } from "../../data";
 import CoreConcept from "./CoreConcept";
+import Section from "../UI/Section";
 
 export default function CoreConcepts() {
     return (
-        <>
-            <h2>Core Concepts</h2>
-            <section id='core-concepts'>
-                <ul>
-                    {CORE_CONCEPTS.map(c => <CoreConcept key={c.id} {...c} />)}
-                </ul>
-            </section>
-        </>
+        <Section id='core-concepts' title='Core Concepts'>
+            <ul>
+                {CORE_CONCEPTS.map(c => <CoreConcept key={c.id} {...c} />)}
+            </ul>
+        </Section>
     )
 }
 
