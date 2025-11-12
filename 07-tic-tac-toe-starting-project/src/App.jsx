@@ -1,19 +1,38 @@
 import { useState } from "react"
 import { Player } from "./components/Player";
+import { Gameboard } from "./components/Gameboard";
+import { Log } from "./components/Log";
+
+// this is used by App & setGameTurns - looks like repeated code but you must use prev in setGameTurns so it needs to be resusable
+// also define it outside App so it is not recreated on state update of App
+function deriveActivePlayer(gameTurns) {
+  return gameTurns.length === 0 || gameTurns[0].symbol === 'O' ? 'X' : 'O'; // default to X
+}
 
 function App() {
-  const [player1,setPlayer1] = useState('PLAYER 1');
-  const [player2,setPlayer2] = useState('PLAYER 2');
+  const [gameTurns, setGameTurns] = useState([]);
 
+  const currentPlayer = () => deriveActivePlayer(gameTurns); // derived state
+
+  const updateGameTurns = (x, y) => {
+    setGameTurns(prev => {
+      // derive this from turns bc we are not guaranteed of latest state with currentPlayer
+      const currSymbol = deriveActivePlayer(prev);
+      const newTurn = { symbol: currSymbol, coordinates: { x, y } };
+      return [newTurn, ...prev];
+    });
+  }
+  // console.log('turns = ', gameTurns);
   return (
     <main>
       <div id="game-container">
-        <ol id="players">
-          <Player name={player1}/>
-          <Player name={player2} />
+        <ol id="players" className="highlight-player">
+          <Player initialName='PLAYER 1' symbol='X' highlight={'X' === currentPlayer} />
+          <Player initialName='PLAYER 2' symbol='O' highlight={'O' === currentPlayer} />
         </ol>
-        GAME BOARD
+        <Gameboard gameTurns={gameTurns} updateGameTurns={updateGameTurns} currentPlayer={currentPlayer} />
       </div>
+      <Log turns={gameTurns} />
     </main>
   )
 }
