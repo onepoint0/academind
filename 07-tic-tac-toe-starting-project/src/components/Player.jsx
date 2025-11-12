@@ -1,11 +1,14 @@
 import { useState } from "react"
 
-export const Player = ({ initialName, symbol, highlight }) => {
+export const Player = ({ initialName, symbol, highlight, setName }) => {
   const [editing, setEditing] = useState(false);
-  const [player, setPlayer] = useState(initialName)
+  const [player, setPlayer] = useState(initialName);
 
   const handleChange = e => setPlayer(e.target.value);
-  const handleClick = () => setEditing(prev => !prev);
+  const handleClick = (symbol, name) => {
+    setEditing(prev => !prev);
+    setName(symbol, name);
+  };
 
   const nameField = editing ?
     <input onChange={handleChange} value={player} className="player-name" /> :
@@ -20,7 +23,7 @@ export const Player = ({ initialName, symbol, highlight }) => {
         <span className="player-symbol">{symbol}</span>
       </span>
       <button
-        onClick={handleClick}>
+        onClick={() => handleClick(symbol, player)}>
         {buttonText}
       </button>
     </li>
