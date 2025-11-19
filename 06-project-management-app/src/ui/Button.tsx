@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const Button = ({ icon, text, color, bgColor, handleClick, ...rest }: Props) => {
-  console.log('props ', color, bgColor)
+
   return (
     <button
       onClick={handleClick}
